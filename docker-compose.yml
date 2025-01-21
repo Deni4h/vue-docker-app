@@ -1,0 +1,25 @@
+
+version: '3.3'
+
+services:
+  frontend:
+    image: frontend-vue:1.0.0
+    container_name: frontend-vue-app
+    ports:
+      - "8087:80" 
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: be-java-app:latest
+    container_name: backend-java-app
+    ports:
+      - "8083:8083" 
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
