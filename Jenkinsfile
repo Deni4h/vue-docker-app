@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB = "denidkr24" // Nama akun Docker Hub kamu
-        BRANCH_NAME = env.BRANCH_NAME // Nama branch otomatis dari Jenkins
+        BRANCH_NAME = "${env.BRANCH_NAME}" // Nama branch otomatis dari Jenkins
     }
     stages {
         stage('Clone Repository') {
