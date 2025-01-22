@@ -3,7 +3,7 @@ version: '3.3'
 
 services:
   frontend:
-    image: frontend-vue:1.0.0
+    image: ${DOCKER_HUB}/frontend-vue:${BRANCH_NAME}
     container_name: frontend-vue-app
     ports:
       - "8087:80" 
@@ -13,7 +13,7 @@ services:
       - app-network
 
   backend:
-    image: be-java-app:latest
+    image: ${DOCKER_HUB}/be-java-app:${BRANCH_NAME}
     container_name: backend-java-app
     ports:
       - "8083:8083" 
