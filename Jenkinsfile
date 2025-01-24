@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir('spring-backend') {
                     sh """
-                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} /backend-java
+                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} .
                     """
                 }
             }
