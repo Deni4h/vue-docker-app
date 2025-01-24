@@ -21,7 +21,8 @@ pipeline {
         }
         stage('Build Backend Image') {
             steps {
-                dir('spring-backend') {
+                dir('spring-backend/backend-java/') {
+                    sh 'mvn clean package -DskipTests'
                     sh """
                     docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} .
                     """
