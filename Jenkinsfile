@@ -2,17 +2,9 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB = "denidkr24" // Nama akun Docker Hub kamu
+        BRANCH_NAME = "${env.BRANCH_NAME}" // Nama branch otomatis dari Jenkins
     }
     stages {
-        stage('Prepare Environment') {
-            steps {
-                script {
-                    BRANCH_NAME = env.BRANCH_NAME?.replaceAll('/', '-').toLowerCase() ?: 'latest'
-                    IMAGE_TAG_FE = "${BRANCH_NAME}-${BUILD_NUMBER}"
-                    IMAGE_TAG_BE = "${BRANCH_NAME}-${BUILD_NUMBER}"
-                }
-            }
-        }
         stage('Clone Repository') {
             steps {
                 checkout scm
@@ -21,11 +13,9 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 dir('frontend') {
-                    script {
-                        sh """
-                        docker build -t ${DOCKER_HUB}/frontend-vue:${IMAGE_TAG_FE} .
-                        """
-                    }
+                    sh """
+                    docker build -t ${DOCKER_HUB}/frontend-vue:${BRANCH_NAME} .
+                    """
                 }
             }
         }
@@ -33,33 +23,27 @@ pipeline {
             steps {
                 dir('spring-backend/backend-java/') {
                     sh 'mvn clean package -DskipTests'
-                    script {
-                        sh """
-                        docker build -t ${DOCKER_HUB}/be-java-app:${IMAGE_TAG_BE} .
-                        """
-                    }
+                    sh """
+                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} .
+                    """
                 }
             }
         }
         stage('Push Frontend Image') {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
-                    script {
-                        sh """
-                        docker push ${DOCKER_HUB}/frontend-vue:${IMAGE_TAG_FE}
-                        """
-                    }
+                    sh """
+                    docker push ${DOCKER_HUB}/frontend-vue:${BRANCH_NAME}
+                    """
                 }
             }
         }
         stage('Push Backend Image') {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
-                    script {
-                        sh """
-                        docker push ${DOCKER_HUB}/be-java-app:${IMAGE_TAG_BE}
-                        """
-                    }
+                    sh """
+                    docker push ${DOCKER_HUB}/be-java-app:${BRANCH_NAME}
+                    """
                 }
             }
         }
