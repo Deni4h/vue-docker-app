@@ -3,6 +3,8 @@ pipeline {
     environment {
         DOCKER_HUB = "denidkr24" // Nama akun Docker Hub kamu
         BRANCH_NAME = env.BRANCH_NAME?.replaceAll('/', '-').toLowerCase() ?: 'latest' // Nama branch otomatis dari Jenkins
+        IMAGE_TAG_FE = "${env.BRANCH_NAME?.replaceAll('/', '-').toLowerCase() ?: 'latest'}-${BUILD_NUMBER}"
+        IMAGE_TAG_BE = "${env.BRANCH_NAME?.replaceAll('/', '-').toLowerCase() ?: 'latest'}-${BUILD_NUMBER}"
     }
     stages {
         stage('Clone Repository') {
@@ -14,7 +16,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh """
-                    docker build -t ${DOCKER_HUB}/frontend-vue:${BRANCH_NAME} .
+                    docker build -t ${DOCKER_HUB}/frontend-vue:${IMAGE_TAG_FE} .
                     """
                 }
             }
@@ -24,7 +26,7 @@ pipeline {
                 dir('spring-backend/backend-java/') {
                     sh 'mvn clean package -DskipTests'
                     sh """
-                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} .
+                    docker build -t ${DOCKER_HUB}/be-java-app:${IMAGE_TAG_BE} .
                     """
                 }
             }
@@ -33,7 +35,7 @@ pipeline {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
                     sh """
-                    docker push ${DOCKER_HUB}/frontend-vue:${BRANCH_NAME}
+                    docker push ${DOCKER_HUB}/frontend-vue:${IMAGE_TAG_FE}
                     """
                 }
             }
@@ -42,7 +44,7 @@ pipeline {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
                     sh """
-                    docker push ${DOCKER_HUB}/be-java-app:${BRANCH_NAME}
+                    docker push ${DOCKER_HUB}/be-java-app:${IMAGE_TAG_BE}
                     """
                 }
             }
