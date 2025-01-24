@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Vue + Docker App</h1>
+    <h1>deni devops + Docker App</h1>
     <form @submit.prevent="addItem">
       <input
         v-model="newName"
