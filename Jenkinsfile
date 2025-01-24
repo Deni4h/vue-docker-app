@@ -21,9 +21,9 @@ pipeline {
         }
         stage('Build Backend Image') {
             steps {
-                dir('backend-java') {
+                dir('spring-backend') {
                     sh """
-                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} .
+                    docker build -t ${DOCKER_HUB}/be-java-app:${BRANCH_NAME} /backend-java
                     """
                 }
             }
