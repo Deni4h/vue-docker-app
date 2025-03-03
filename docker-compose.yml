@@ -2,14 +2,14 @@ version: '3.3'
 
 services: 
   frontend:
-    image: ${DOCKER_HUB}/frontend-vue:${BUILD_TAG}
+    image: denidkr24/frontend-vue:origin-deni-app-1-20250303233716 
     container_name: fe-vue-app
     ports:
      - 8087:80
     networks:
      - app-network
   backend: 
-    image: ${DOCKER_HUB}/be-java-app:${BUILD_TAG}
+    image: denidkr24/be-java-app:origin-deni-app-1-20250303233716 
     container_name: be-java-app
     ports: 
      - 8083:8083
