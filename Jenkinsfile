@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                checkout scm
+                checkout ${BRANCH_NAME}
             }
         }
         stage('Debug Build Tag') {
