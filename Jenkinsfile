@@ -57,4 +57,20 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            slackSend (
+                channel: '#all-deni-satria',
+                color: 'good',
+                message: "✅ Build sukses! Job: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nLihat detail: ${env.BUILD_URL}"
+            )
+        }
+        failure {
+            slackSend (
+                channel: '#all-deni-satria',
+                color: 'danger',
+                message: "❌ Build gagal! Job: ${env.JOB_NAME} #${env.BUILD_NUMBER} \nCek error di: ${env.BUILD_URL}"
+            )
+        }
+    }
 }
