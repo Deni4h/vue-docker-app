@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB = "denidkr24"
-        BRANCH_NAME = "${env.GIT_BRANCH?.replaceAll('/', '-') ?: 'latest'}"
+        BRANCH_NAME = "main"
         BUILD_TIMESTAMP = "${new Date().format('yyyyMMddHHmmss')}"
         BUILD_TAG = "${BRANCH_NAME}-${BUILD_TIMESTAMP}" // Kombinasi branch dan timestamp
     }
