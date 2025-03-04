@@ -2,14 +2,14 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB = "denidkr24"
-        BRANCH_NAME = "main"
+        BRANCH_NAME = "${env.GIT_BRANCH?.replaceAll('/', '-') ?: 'latest'}"
         BUILD_TIMESTAMP = "${new Date().format('yyyyMMddHHmmss')}"
         BUILD_TAG = "${BRANCH_NAME}-${BUILD_TIMESTAMP}" // Kombinasi branch dan timestamp
     }
     stages {
         stage('Clone Repository') {
             steps {
-                checkout ${BRANCH_NAME}
+                checkout scm
             }
         }
         stage('Debug Build Tag') {
